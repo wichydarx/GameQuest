@@ -38,15 +38,15 @@ class RegistrationController extends AbstractController
             //token generation
 
             $header = [
-                'type' => 'JWT',
-                'alg' => 'HS256'
+                'alg' => 'HS256',
+                'typ' => 'JWT',
             ];
 
             $payload = [
                 'user_id' => $user->getId(),
             ];
 
-            $token = $jwt->generate($payload, $header, $this->getParameter('app.jwtencryptkey'));
+            $token = $jwt->generate( $header,$payload, $this->getParameter('app.jwtencryptkey'));
             dd($token);
             //send mail
 
@@ -73,10 +73,10 @@ class RegistrationController extends AbstractController
     {
 
         if ($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->checkSignature($token, $this->getParameter('app.jwtencryptkey'))) {
-
+            dd($token);
             $payload = $jwt->getPayloadFromToken($token);
 
-
+            dd($payload);
             $user = $userRepository->find($payload['user_id']);
 
 
