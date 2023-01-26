@@ -119,7 +119,7 @@ class RegistrationController extends AbstractController
         ];
 
         $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtencryptkey'));
-        dd($token);
+        
 
         //send mail
 
