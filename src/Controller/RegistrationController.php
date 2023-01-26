@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
-
+  
 
     #[Route('/verif/{token}', name: 'verify_user')]
    
@@ -73,10 +73,10 @@ class RegistrationController extends AbstractController
     {
 
         if ($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->checkSignature($token, $this->getParameter('app.jwtencryptkey'))) {
-            dd($token);
+           
             $payload = $jwt->getPayloadFromToken($token);
 
-            dd($payload);
+            
             $user = $userRepository->find($payload['user_id']);
 
 
@@ -95,10 +95,10 @@ class RegistrationController extends AbstractController
     #[Route('/sendveirfylink', name: 'send_veirfy_link')]
     public function sendVerificationResetLink(JWTService $jwt, SendMail $sendMail, UserRepository $userRepository): Response
     {
-        $user =$this->getUser();
+        $user = $this->getUser();
         if (!$user) {
             $this->addFlash('danger', 'Please login');
-            return $this ->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
 
         if ($user->getIsVerified()) {
@@ -107,15 +107,19 @@ class RegistrationController extends AbstractController
         }
 
         $header = [
+
+            'alg' => 'HS256',
             'type' => 'JWT',
-            'alg' => 'HS256'
+
         ];
 
         $payload = [
+
             'user_id' => $user->getId(),
         ];
 
-        $token = $jwt->generate($payload, $header, $this->getParameter('app.jwtencryptkey'));
+        $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtencryptkey'));
+        dd($token);
 
         //send mail
 
@@ -126,8 +130,10 @@ class RegistrationController extends AbstractController
             'verified',
             compact('user', 'token')
         );
-        
-        $this ->addFlash('success', 'The email has been sent!');
+
+        $this->addFlash('success', 'The email has been sent!');
         return $this->redirectToRoute('app_home');
     }
+
+    
 }
