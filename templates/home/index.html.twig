@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GameQuest
+{% endblock %}
+
+{% block body %}
+	<div class="container d-flex justify-content-between">
+		<h1 class="display-5 mx-3">Featured Games</h1>
+		<h1 class="display-5 mx-1">Hot Games</h1>
+	</div>
+
+	<section class="container d-flex justify-content-evenly">
+		<div class="container w-75">
+			<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active border-2 rouded-3">
+
+						<img src="https://cdn.cdkeys.com/media/wysiwyg/Home_Page_Slider/One-piece-oddysey-out-now/OPO_HomepageBanner_956x528-En.png" class="d-block w-100 h-auto rouded-3" alt="...">
+
+
+					</div>
+					<div class="carousel-item">
+						<img src="https://cdn.cdkeys.com/media/wysiwyg/Home_Page_Slider/Elden-ring-GOTY/GOTYEldenRing_HomepageBanner_956x528-En.png" class="d-block w-100 rouded-3" alt="...">
+
+
+					</div>
+					<div class="carousel-item">
+						<img src="https://cdn.cdkeys.com/media/wysiwyg/Home_Page_Slider/Hogwarts-legacy-pre-order/HogwartsL_HomepageBanner_956x528_PreOrder-En.png" class="d-block w-100 rouded-3" alt="...">
+
+
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="container w-25"></div>
+	</section>
+    <div id="separator" class="container"></div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<div>
+	<h1>Email Verification</h1>
+
+	Hi [name],
+				
+				Thanks for getting started on GameQuest!
+	<span></span>
+	We need a little more information to complete your registration, including a confirmation of your email address.
+				
+				Click below to confirm your email address:
+
+	<p>
+		<a href="{{ absolute_url(path('verify_user', {token: token})) }}">{{ absolute_url(path('verify_user', {token: token})) }}</a>
+	</p>
+
+
+	This link will expire in 3 hours</div>

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Tags{% endblock %}
+
+{% block body %}
+    <h1>Create new Tags</h1>
+
+{{ include('admin/admin_tags/_form.html.twig') }}
+
+
+    <a href="{{ path('app_admin_tags_index') }}">back to list</a>
+{% endblock %}
