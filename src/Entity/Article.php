@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -41,11 +42,13 @@ class Article
     private Collection $comments;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\File(
+        maxSize: '1024k',
+        maxSizeMessage: 'Please upload a valid PDF',
+    )]
     private ?string $image = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $resetToken = null;
-
+   
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -190,17 +193,7 @@ class Article
         return $this;
     }
 
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this;
-    }
+    
 
  
 }

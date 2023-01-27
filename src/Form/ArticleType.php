@@ -17,7 +17,7 @@ class ArticleType extends AbstractType
             ->add('title')
             ->add('content',CKEditorType::class)
             ->add('isPublished')
-            ->add('image',FileType::class, ['required' => false])
+            ->add('image',FileType::class, ['required' => true])
             ->add('category')
             ->add('tags')
         ;

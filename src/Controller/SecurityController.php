@@ -41,16 +41,16 @@ class SecurityController extends AbstractController
 
 
     #[Route(path: '/forgotten-password', name: 'app_forgotten_password')]
-    public function forgottenPassword(Request $request,
-    UserRepository $userRepository,
-    TokenGeneratorInterface $tokenGeneratorInterface,
-    EntityManagerInterface $eM,
-    SendMail $sendMail
-    ): Response
-    {
+    public function forgottenPassword(
+        Request $request,
+        UserRepository $userRepository,
+        TokenGeneratorInterface $tokenGeneratorInterface,
+        EntityManagerInterface $eM,
+        SendMail $sendMail
+    ): Response {
         $form = $this->createForm(PasswordResetFormType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findOneByEmail($form->get('email')->getData());
 
             if ($user) {
@@ -58,11 +58,11 @@ class SecurityController extends AbstractController
                 $user->setResetToken($token);
                 $eM->persist($user);
                 $eM->flush();
-                
+
                 //reset link
-                $url = $this->generateUrl('app_password_reset', ['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL);
-                
-                $context =compact('url', 'user');
+                $url = $this->generateUrl('app_password_reset', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $context = compact('url', 'user');
 
                 $sendMail->sendRegistrationMail(
                     'no-reply@GameGuest.com',
@@ -77,6 +77,7 @@ class SecurityController extends AbstractController
             $this->addFlash('danger', 'An error has occured, please try again.');
             return $this->redirectToRoute('app_login');
         }
+
         return $this->render(
             'security/reset_password_request.html.twig',
             [
@@ -85,26 +86,29 @@ class SecurityController extends AbstractController
         );
     }
 
-    #[Route(path: '/forgotten-password/reset', name: 'app_password_reset')]
-    public function resetPassword(string $token,
-    Request $request,
-    UserRepository $userRepository,
-    EntityManagerInterface $eM,
-    UserPasswordHasherInterface $hasher
-    ): Response
-    {
+    #[Route(path: '/forgotten-password/reset/{token}', name: 'app_password_reset')]
+    public function resetPassword(
+        Request $request,
+        String $token,
+        UserRepository $userRepository,
+        EntityManagerInterface $eM,
+        UserPasswordHasherInterface $hasher,
+    ): Response {
+
         $user = $userRepository->findOneByResetToken($token);
+
+
         if ($user) {
             $form = $this->createForm(ResetPassWordType::class);
             $form = $form->handleRequest($request);
+            
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $user->setResetToken("");
-                $user->setPassword($hasher->hashPassword($user, $form->get('password')->getData()));
-                
+                $user->setResetToken('');
+                $user->setPassword($hasher->hashPassword($user, $form->get('password')->getData())); 
                 $eM->persist($user);
                 $eM->flush();
-                
+
                 $this->addFlash('success', 'Your password has been reset');
                 return $this->redirectToRoute('app_login');
             }
